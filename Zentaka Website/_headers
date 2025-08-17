@@ -1,5 +1,15 @@
-/assets/fonts/sddystopian-webfont.woff2
-  Access-Control-Allow-Origin: *
-
 /assets/fonts/sddystopian-webfont.woff
   Access-Control-Allow-Origin: *
+  Content-Type: font/woff
+
+/assets/fonts/sddystopian-webfont.woff2
+  Access-Control-Allow-Origin: *
+  Content-Type: font/woff2
+
+/assets/fonts/sddystopian-webfont.eot
+  Access-Control-Allow-Origin: *
+  Content-Type: application/vnd.ms-fontobject
+
+/assets/fonts/sddystopian-webfont.svg
+  Access-Control-Allow-Origin: *
+  Content-Type: image/svg+xml
