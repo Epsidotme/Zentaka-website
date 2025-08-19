@@ -308,7 +308,7 @@
       const cardDescription = card.getAttribute('data-description');
       const cardBg = card.getAttribute('data-bg');
 
-      // If the clicked card is already active, close it
+      // If clicking the same card, toggle close
       if (activeCard === card) {
         infoPanel.classList.remove('show');
         infoPanel.classList.add('hide');
@@ -316,17 +316,32 @@
         return;
       }
 
-      // Populate the info panel
+      // If another card is active, close first
+      if (activeCard) {
+        infoPanel.classList.remove('show');
+        infoPanel.classList.add('hide');
+        // Wait for hide animation before showing new content
+        setTimeout(() => {
+          title.textContent = cardTitle;
+          description.textContent = cardDescription;
+          infoPanel.style.backgroundImage = `url(${cardBg})`;
+          infoPanel.classList.remove('hide');
+          infoPanel.classList.add('show');
+          activeCard = card;
+        }, 300); // match animation duration
+        return;
+      }
+
+      // No active card, just open
       title.textContent = cardTitle;
       description.textContent = cardDescription;
       infoPanel.style.backgroundImage = `url(${cardBg})`;
-
-      // Show the panel
       infoPanel.classList.remove('hide');
       infoPanel.classList.add('show');
       activeCard = card;
     });
   });
 </script>
+
 
 </html>
