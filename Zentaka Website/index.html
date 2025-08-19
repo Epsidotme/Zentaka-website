@@ -312,32 +312,25 @@ divisionCards.forEach(card => {
     const description = card.dataset.description;
     const bg = card.dataset.bg;
 
-    const isSameCard = activeCard === card;
-
-    // If clicking the same card, collapse panel
-    if (isSameCard) {
-      infoPanel.style.height = '0px';
-      setTimeout(() => {
-        infoPanel.classList.add('hidden');
-      }, 300); // matches CSS transition duration
+    if (activeCard === card) {
+      // Hide panel if clicking the same card
+      infoPanel.classList.remove('show');
+      infoPanel.classList.add('hide');
       activeCard = null;
-      return;
+    } else {
+      divisionTitle.textContent = title;
+      divisionDescription.textContent = description;
+      infoPanel.style.backgroundImage = `url('${bg}')`;
+      infoPanel.classList.remove('hide');
+      infoPanel.classList.add('show');
+      activeCard = card;
+      // Scroll to info panel smoothly
+      infoPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-
-    // Update content
-    divisionTitle.textContent = title;
-    divisionDescription.textContent = description;
-    infoPanel.style.backgroundImage = `url('${bg}')`;
-    infoPanel.classList.remove('hidden');
-
-    // Set dynamic height to match content
-    const contentHeight = infoPanel.scrollHeight;
-    infoPanel.style.height = contentHeight + 'px';
-
-    activeCard = card;
   });
 });
 </script>
+
 
 
 
