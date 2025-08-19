@@ -130,19 +130,18 @@
 .hidden { display: none; }
 
     #division-info {
-  overflow: hidden;
-  height: 0;
-  transition: opacity 0.5s ease, transform 0.5s ease;
   opacity: 0;
-  transform: scaleY(0.95);
-  max-height: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  display: none;
 }
+
 #division-info.show {
   display: block;
   opacity: 1;
-  transform: scaleY(1);
-  max-height: 1000px; /* large enough to contain content */
+  transform: translateY(0);
 }
+
 
 #division-info.hide {
   opacity: 0;
