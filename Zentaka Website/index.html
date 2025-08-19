@@ -130,15 +130,17 @@
    #division-info {
   opacity: 0;
   max-height: 0;
+  overflow: hidden;
   transform: translateY(-10px);
   transition: opacity 0.4s ease, max-height 0.4s ease, transform 0.4s ease;
-  overflow: hidden;
 }
 
-#division-info.open {
+#division-info.show {
   opacity: 1;
-  max-height: 1000px; /* ensure this is bigger than your content */
+  transform: translateY(0);
+  max-height: 1000px; /* large enough for any content */
 }
+
 
   </style>
 </head>
@@ -291,27 +293,38 @@ const infoPanel = document.getElementById("division-info");
 const divisionTitle = document.getElementById("division-title");
 const divisionDescription = document.getElementById("division-description");
 
-let open = false;
-
 divisionCards.forEach(card => {
   card.addEventListener("click", () => {
     const title = card.dataset.title;
     const description = card.dataset.description;
 
     if (infoPanel.classList.contains("show") && divisionTitle.textContent === title) {
-      // Close if clicking the same card
+      // Close
+      infoPanel.style.maxHeight = '0';
+      infoPanel.style.opacity = '0';
+      infoPanel.style.transform = 'translateY(-10px)';
       infoPanel.classList.remove("show");
-      infoPanel.classList.add("hide");
     } else {
-      // Open new or switch content
+      // Set content first
       divisionTitle.textContent = title;
       divisionDescription.textContent = description;
 
-      infoPanel.classList.remove("hide");
+      // Temporarily remove max-height to measure content
+      infoPanel.style.maxHeight = 'none';
+      const scrollHeight = infoPanel.scrollHeight + "px";
+
+      // Set max-height for smooth transition
+      infoPanel.style.maxHeight = '0';
+      infoPanel.offsetHeight; // force reflow
+      infoPanel.style.transition = 'opacity 0.4s ease, max-height 0.4s ease, transform 0.4s ease';
+      infoPanel.style.maxHeight = scrollHeight;
+      infoPanel.style.opacity = '1';
+      infoPanel.style.transform = 'translateY(0)';
       infoPanel.classList.add("show");
     }
   });
 });
+
 </script>
 
 
