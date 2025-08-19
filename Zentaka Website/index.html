@@ -99,49 +99,6 @@
   scrollbar-color: #666 #0a0a0a; /* thumb | track */
 }
 
-    .division-card {
-  position: relative;
-  color: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  cursor: pointer;
-  overflow: hidden;
-  background-size: cover;
-  background-position: center;
-  user-select: text;
-  margin-bottom: 1rem;
-}
-
-    .division-card .overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.4);
-  z-index: 2;
-}
-    #infoPanel {
-  margin-top: 2rem;
-  padding: 1rem;
-  background-size: cover;
-  background-position: center;
-  border-radius: 12px;
-  color: white;
-}
-
-   #division-info {
-  opacity: 0;
-  max-height: 0;
-  overflow: hidden;
-  transform: translateY(-10px);
-  transition: opacity 0.4s ease, max-height 0.4s ease, transform 0.4s ease;
-}
-
-#division-info.show {
-  opacity: 1;
-  transform: translateY(0);
-  max-height: 1000px; /* large enough for any content */
-}
-
-
   </style>
 </head>
 <body class="bg-black text-gray-200">
@@ -228,37 +185,22 @@
     <div class="relative z-10">
       <h2 class="text-4xl font-bold text-white mb-12">Our Divisions</h2>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-       <div class="bg-black p-6 rounded-xl shadow-lg border border-gray-800 hover:border-purple-500 transition cursor-pointer division-card" data-title="R&D Division" data-description="Pioneering the evolution of humanity, our laboratories merge flesh and machine, thought and code. Neural implants expand cognition beyond natural limits, while biomechanical prosthetics redefine the boundaries of strength and agility. Each innovation is a step toward tomorrow, where the line between human and machine is not only blurred—it is obsolete. Progress waits for no conscience." data-bg="Assets/images/division1.png">
-  <h3 class="text-2xl font-semibold mb-4 text-purple-400">R&D Division</h3>
-  <p class="text-white">Neural implants, biomechanical prosthetics, and cybernetic innovation for tomorrow’s humanity.</p>
-           <div class="overlay"></div>
-</div>
-
-<div class="bg-black p-6 rounded-xl shadow-lg border border-gray-800 hover:border-purple-500 transition cursor-pointer division-card" data-title="Security Division" data-description="Safety is not optional. Our private defense systems patrol every sector, integrating autonomous drones, predictive AI, and cutting-edge enforcement technologies. Compliance is monitored, threats neutralized before they manifest. In a world of chaos and shadow, security is absolute—and those who resist are cataloged, contained, and corrected." data-bg="Assets/images/division2.png">
-  <h3 class="text-2xl font-semibold mb-4 text-purple-400">Security Division</h3>
-  <p class="text-white">Private defense systems, drones, and advanced enforcement technologies for a safer tomorrow.</p>
-    <div class="overlay"></div>
-</div>
-
-<div class="bg-black p-6 rounded-xl shadow-lg border border-gray-800 hover:border-purple-500 transition cursor-pointer division-card" data-title="Consumer Division" data-description="Enhancement is for everyone. From bio-optimized limbs to neural interface upgrades, our products put the future within reach of the everyday citizen. Designed for accessibility and global adoption, these augmentations promise not only survival, but supremacy in an increasingly mechanized society. Comfort, efficiency, and control—now available at scale" data-bg="Assets/images/division3.png">
-  <h3 class="text-2xl font-semibold mb-4 text-purple-400">Consumer Division</h3>
-  <p class="text-white">Affordable augmentations and enhancements designed for everyday citizens and global adoption.</p>
-    <div class="overlay"></div>
-</div>
-
+        <div class="bg-black p-6 rounded-xl shadow-lg border border-gray-800 hover:border-purple-500 transition">
+          <h3 class="text-2xl font-semibold mb-4 text-purple-400">R&D Division</h3>
+          <p class="text-white">Neural implants, biomechanical prosthetics, and cybernetic innovation for tomorrow’s humanity.</p>
+        </div>
+        <div class="bg-black p-6 rounded-xl shadow-lg border border-gray-800 hover:border-purple-500 transition">
+          <h3 class="text-2xl font-semibold mb-4 text-purple-400">Security Division</h3>
+          <p class="text-white">Private defense systems, drones, and advanced enforcement technologies for a safer tomorrow.</p>
+        </div>
+        <div class="bg-black p-6 rounded-xl shadow-lg border border-gray-800 hover:border-purple-500 transition">
+          <h3 class="text-2xl font-semibold mb-4 text-purple-400">Consumer Division</h3>
+          <p class="text-white">Affordable augmentations and enhancements designed for everyday citizens and global adoption.</p>
+        </div>
       </div>
     </div>
   </section>
-  
-  <!-- division cards -->
-  <section id="division-info" class="py-12 px-6 md:px-20 text-center rounded-xl border-2 border-gray-800 bg-black/90 text-white">
-     <div class="overlay absolute inset-0 z-1"></div>
-  <h3 id="division-title" class="text-3xl font-bold text-purple-400 mb-4"></h3>
-  <p id="division-description" class="max-w-3xl mx-auto"></p>
-    
-</section>
 
-  
   <!-- Initiatives -->
   <section id="initiatives" class="py-20 px-6 md:px-20 relative z-10 text-center border-2 border-grey-800 rounded-xl overflow-hidden">
     <img src="Assets/images/image5.png" alt="" class="absolute inset-0 w-full h-full object-cover select-none pointer-events-none" draggable="false" oncontextmenu="return false;">
@@ -286,48 +228,4 @@
     </div>
   </footer>
 </body>
-  
-<script>
-const divisionCards = document.querySelectorAll(".division-card");
-const infoPanel = document.getElementById("division-info");
-const divisionTitle = document.getElementById("division-title");
-const divisionDescription = document.getElementById("division-description");
-
-divisionCards.forEach(card => {
-  card.addEventListener("click", () => {
-    const title = card.dataset.title;
-    const description = card.dataset.description;
-
-    if (infoPanel.classList.contains("show") && divisionTitle.textContent === title) {
-      // Close
-      infoPanel.style.maxHeight = '0';
-      infoPanel.style.opacity = '0';
-      infoPanel.style.transform = 'translateY(-10px)';
-      infoPanel.classList.remove("show");
-    } else {
-      // Set content first
-      divisionTitle.textContent = title;
-      divisionDescription.textContent = description;
-
-      // Temporarily remove max-height to measure content
-      infoPanel.style.maxHeight = 'none';
-      const scrollHeight = infoPanel.scrollHeight + "px";
-
-      // Set max-height for smooth transition
-      infoPanel.style.maxHeight = '0';
-      infoPanel.offsetHeight; // force reflow
-      infoPanel.style.transition = 'opacity 0.4s ease, max-height 0.4s ease, transform 0.4s ease';
-      infoPanel.style.maxHeight = scrollHeight;
-      infoPanel.style.opacity = '1';
-      infoPanel.style.transform = 'translateY(0)';
-      infoPanel.classList.add("show");
-    }
-  });
-});
-
-</script>
-
-
-
-
 </html>
