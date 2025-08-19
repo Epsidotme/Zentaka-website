@@ -126,7 +126,21 @@
   border-radius: 12px;
   color: white;
 }
+    
 .hidden { display: none; }
+
+     #division-info {
+    transition: all 0.4s ease;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+  }
+    
+  #division-info.active {
+    max-height: 500px; /* adjust as needed */
+    opacity: 1;
+  }
+    
   </style>
 </head>
 <body class="bg-black text-gray-200">
@@ -278,13 +292,37 @@
   const titleEl = document.getElementById('division-title');
   const descEl = document.getElementById('division-description');
 
+  let currentCard = null;
+
   divisionCards.forEach(card => {
     card.addEventListener('click', () => {
+      const isSameCard = card === currentCard;
+
+      if (isSameCard) {
+        // Clicked same card -> close panel
+        infoPanel.classList.remove('active');
+        currentCard = null;
+        return;
+      }
+
+      // Clicked a new card -> update content
       titleEl.textContent = card.dataset.title;
       descEl.textContent = card.dataset.description;
-      card.style.backgroundImage = `url('${card.dataset.bg}')`;
-      infoPanel.classList.remove('hidden');
+
+      // Optional: dynamic background
+      if (card.dataset.bg) {
+        infoPanel.style.backgroundImage = `url(${card.dataset.bg})`;
+        infoPanel.style.backgroundSize = 'cover';
+        infoPanel.style.backgroundPosition = 'center';
+      }
+
+      // Animate open/close
+      infoPanel.classList.remove('active');
+      void infoPanel.offsetWidth; // trigger reflow to restart animation
+      infoPanel.classList.add('active');
+      
       infoPanel.scrollIntoView({ behavior: 'smooth' });
+      currentCard = card;
     });
   });
 </script>
