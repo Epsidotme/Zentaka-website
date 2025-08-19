@@ -296,33 +296,37 @@ let activeCard = null;
 
 divisionCards.forEach(card => {
   card.addEventListener('click', () => {
-    // Toggle the panel if clicking the same card
-    if (activeCard === card) {
+    const isSameCard = activeCard === card;
+
+    if (activeCard) {
+      // Close current panel with fade-out
       infoPanel.classList.remove('active');
-      infoPanel.classList.add('hidden');
-      activeCard = null;
-      return;
+      infoPanel.classList.add('fade-out');
+
+      setTimeout(() => {
+        if (!isSameCard) {
+          // Update content after fade-out
+          divisionTitle.textContent = card.dataset.title;
+          divisionDescription.textContent = card.dataset.description;
+
+          infoPanel.classList.remove('fade-out', 'hidden');
+          infoPanel.classList.add('active');
+        } else {
+          // If clicking same card, hide completely
+          infoPanel.classList.add('hidden');
+        }
+      }, 500); // Match with CSS transition duration
+    } else {
+      // First open
+      divisionTitle.textContent = card.dataset.title;
+      divisionDescription.textContent = card.dataset.description;
+      infoPanel.classList.remove('hidden', 'fade-out');
+      infoPanel.classList.add('active');
     }
 
-    activeCard = card;
-
-    // Update content
-    divisionTitle.textContent = card.dataset.title;
-    divisionDescription.textContent = card.dataset.description;
-
-    // Update background image
-    const bgUrl = card.dataset.bg;
-    infoPanel.style.backgroundImage = `url('${bgUrl}')`;
-
-    // Show panel
-    infoPanel.classList.remove('hidden');
-    setTimeout(() => {
-      infoPanel.classList.add('active');
-    }, 50); // slight delay for transition
+    activeCard = isSameCard ? null : card;
   });
 });
 </script>
-
-
 
 </html>
