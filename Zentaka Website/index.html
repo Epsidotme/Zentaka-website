@@ -126,8 +126,6 @@
   border-radius: 12px;
   color: white;
 }
-    
-.hidden { display: none; }
 
    #division-info {
   opacity: 0;
@@ -137,16 +135,9 @@
   overflow: hidden;
 }
 
-#division-info.show {
+#division-info.open {
   opacity: 1;
-  max-height: 1000px; /* large enough to fit content */
-  transform: translateY(0);
-}
-
-#division-info.hide {
-  opacity: 0;
-  max-height: 0;
-  transform: translateY(-10px);
+  max-height: 1000px; /* ensure this is bigger than your content */
 }
 
   </style>
@@ -258,7 +249,7 @@
   </section>
   
   <!-- division cards -->
-  <section id="division-info" class="py-12 px-6 md:px-20 text-center rounded-xl border-2 border-gray-800 bg-black/90 text-white hidden">
+  <section id="division-info" class="py-12 px-6 md:px-20 text-center rounded-xl border-2 border-gray-800 bg-black/90 text-white">
      <div class="overlay absolute inset-0 z-1"></div>
   <h3 id="division-title" class="text-3xl font-bold text-purple-400 mb-4"></h3>
   <p id="division-description" class="max-w-3xl mx-auto"></p>
@@ -295,40 +286,34 @@
 </body>
   
 <script>
-  // Get all division cards
-  const cards = document.querySelectorAll('.division-card');
-  const infoSection = document.getElementById('division-info');
-  const titleEl = document.getElementById('division-title');
-  const descEl = document.getElementById('division-description');
+const divisionCards = document.querySelectorAll(".division-card");
+const infoPanel = document.getElementById("division-info");
+const divisionTitle = document.getElementById("division-title");
+const divisionDescription = document.getElementById("division-description");
 
-  cards.forEach(card => {
-    card.addEventListener('click', () => {
-      const title = card.dataset.title;
-      const description = card.dataset.description;
-      const bg = card.dataset.bg;
+let open = false;
 
-      // Update info panel content
-      titleEl.textContent = title;
-      descEl.textContent = description;
+divisionCards.forEach(card => {
+  card.addEventListener("click", () => {
+    const title = card.dataset.title;
+    const description = card.dataset.description;
 
-      // Update background if you want
-      infoSection.style.backgroundImage = `url('${bg}')`;
+    if (infoPanel.classList.contains("show") && divisionTitle.textContent === title) {
+      // Close if clicking the same card
+      infoPanel.classList.remove("show");
+      infoPanel.classList.add("hide");
+    } else {
+      // Open new or switch content
+      divisionTitle.textContent = title;
+      divisionDescription.textContent = description;
 
-      // Show info panel
-      infoSection.classList.remove('hidden');
-      infoSection.classList.add('show');
-    });
-  });
-
-  // Optional: click outside to hide
-  infoSection.addEventListener('click', (e) => {
-    if (e.target === infoSection) {
-      infoSection.classList.remove('show');
-      infoSection.classList.add('hide');
-      setTimeout(() => infoSection.classList.add('hidden'), 400);
+      infoPanel.classList.remove("hide");
+      infoPanel.classList.add("show");
     }
   });
+});
 </script>
+
 
 
 
