@@ -297,54 +297,56 @@
 </body>
   
 <script>
-const divisionCards = document.querySelectorAll('.division-card');
-const divisionInfo = document.getElementById('division-info');
-const divisionTitle = document.getElementById('division-title');
-const divisionDescription = document.getElementById('division-description');
+  // Select all division cards and the info panel elements
+  const divisionCards = document.querySelectorAll('.division-card');
+  const infoPanel = document.getElementById('division-info');
+  const divisionTitle = document.getElementById('division-title');
+  const divisionDescription = document.getElementById('division-description');
 
-let currentOpenCard = null;
+  // Function to show info panel with card data
+  function showDivisionInfo(card) {
+    const title = card.getAttribute('data-title');
+    const description = card.getAttribute('data-description');
+    const bg = card.getAttribute('data-bg');
 
-// Function to update content
-function updateContent(card) {
-  divisionTitle.textContent = card.dataset.title;
-  divisionDescription.textContent = card.dataset.description;
-  divisionInfo.style.backgroundImage = `url(${card.dataset.bg})`;
-}
+    divisionTitle.textContent = title;
+    divisionDescription.textContent = description;
+    infoPanel.style.backgroundImage = `url(${bg})`;
 
-// Function to open panel with animation
-function openInfo(card) {
-  updateContent(card);
-  divisionInfo.classList.remove('hide');
-  divisionInfo.classList.add('show');
-  currentOpenCard = card;
-}
+    infoPanel.classList.remove('hidden', 'hide');
+    infoPanel.classList.add('show');
+  }
 
-// Function to close panel with animation
-function closeInfo(callback) {
-  divisionInfo.classList.remove('show');
-  divisionInfo.classList.add('hide');
+  // Function to hide info panel
+  function hideDivisionInfo() {
+    infoPanel.classList.remove('show');
+    infoPanel.classList.add('hide');
 
-  divisionInfo.addEventListener('transitionend', function handler() {
-    divisionInfo.removeEventListener('transitionend', handler);
-    if (callback) callback();
+    setTimeout(() => {
+      infoPanel.classList.add('hidden');
+    }, 500); // match CSS transition duration
+  }
+
+  // Add click events to each card
+  divisionCards.forEach(card => {
+    card.addEventListener('click', () => {
+      // If clicking the same card, toggle the panel
+      if (infoPanel.classList.contains('show') && divisionTitle.textContent === card.getAttribute('data-title')) {
+        hideDivisionInfo();
+      } else {
+        showDivisionInfo(card);
+        // Scroll into view smoothly
+        infoPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
   });
-  currentOpenCard = null;
-}
 
-divisionCards.forEach(card => {
-  card.addEventListener('click', () => {
-    if (currentOpenCard === card) {
-      // Same card clicked: close
-      closeInfo();
-    } else if (currentOpenCard) {
-      // Different card clicked: close first, then open new
-      closeInfo(() => openInfo(card));
-    } else {
-      // Nothing open: open new
-      openInfo(card);
+  // Optional: click outside panel to close
+  document.addEventListener('click', (e) => {
+    if (!infoPanel.contains(e.target) && ![...divisionCards].some(card => card.contains(e.target))) {
+      if (infoPanel.classList.contains('show')) hideDivisionInfo();
     }
   });
-});
 </script>
-
+  
 </html>
