@@ -74,31 +74,82 @@
       transform: scale(1.1);
       box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
     }
-    /* Webkit browsers (Chrome, Edge, Safari) */
-::-webkit-scrollbar {
-  width: 12px; /* slim scrollbar */
-}
 
-::-webkit-scrollbar-track {
-  background: #0a0a0a; /* deep black/grey track */
-}
+    /* Scrollbar styles */
+    ::-webkit-scrollbar {
+      width: 12px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0a0a0a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #444, #666);
+      border-radius: 6px;
+      border: 1px solid #222;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(180deg, #666, #888);
+    }
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: #666 #0a0a0a;
+    }
 
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #444, #666); /* metallic grey gradient */
-  border-radius: 6px;
-  border: 1px solid #222; /* subtle edge */
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #666, #888); /* lighter on hover */
-}
-
-/* Firefox */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: #666 #0a0a0a; /* thumb | track */
-}
-
+    /* Popover styles */
+    .popover {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(0, 0, 0, 0.9);
+      border: 2px solid #9333ea;
+      border-radius: 8px;
+      padding: 20px;
+      max-width: 500px;
+      width: 90%;
+      z-index: 100;
+      box-shadow: 0 0 20px rgba(147, 51, 234, 0.5);
+      font-family: 'ShareTechMono', monospace;
+      color: #fff;
+      backdrop-filter: blur(5px);
+    }
+    .popover h3 {
+      font-family: 'SDDystopian', sans-serif;
+      color: #9333ea;
+      font-size: 1.75rem;
+      margin-bottom: 1rem;
+    }
+    .popover p {
+      margin-bottom: 1rem;
+    }
+    .popover .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+    .popover .close-btn:hover {
+      color: #9333ea;
+    }
+    .popover-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 99;
+    }
+    .division-card {
+      cursor: pointer;
+    }
   </style>
 </head>
 <body class="bg-black text-gray-200">
@@ -185,21 +236,28 @@
     <div class="relative z-10">
       <h2 class="text-4xl font-bold text-white mb-12">Our Divisions</h2>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-        <div class="bg-black p-6 rounded-xl shadow-lg border border-gray-800 hover:border-purple-500 transition">
+        <div class="bg-black p-6 rounded-xl shadow-lg border border-gray-800 hover:border-purple-500 transition division-card" data-division="rnd">
           <h3 class="text-2xl font-semibold mb-4 text-purple-400">R&D Division</h3>
           <p class="text-white">Neural implants, biomechanical prosthetics, and cybernetic innovation for tomorrow’s humanity.</p>
         </div>
-        <div class="bg-black p-6 rounded-xl shadow-lg border border-gray-800 hover:border-purple-500 transition">
+        <div class="bg-black p-6 rounded-xl shadow-lg border border-gray-800 hover:border-purple-500 transition division-card" data-division="security">
           <h3 class="text-2xl font-semibold mb-4 text-purple-400">Security Division</h3>
           <p class="text-white">Private defense systems, drones, and advanced enforcement technologies for a safer tomorrow.</p>
         </div>
-        <div class="bg-black p-6 rounded-xl shadow-lg border border-gray-800 hover:border-purple-500 transition">
+        <div class="bg-black p-6 rounded-xl shadow-lg border border-gray-800 hover:border-purple-500 transition division-card" data-division="consumer">
           <h3 class="text-2xl font-semibold mb-4 text-purple-400">Consumer Division</h3>
           <p class="text-white">Affordable augmentations and enhancements designed for everyday citizens and global adoption.</p>
         </div>
       </div>
     </div>
   </section>
+
+  <!-- Popover Overlay and Content -->
+  <div class="popover-overlay" id="popover-overlay"></div>
+  <div class="popover" id="popover">
+    <button class="close-btn" onclick="closePopover()">×</button>
+    <div id="popover-content"></div>
+  </div>
 
   <!-- Initiatives -->
   <section id="initiatives" class="py-20 px-6 md:px-20 relative z-10 text-center border-2 border-grey-800 rounded-xl overflow-hidden">
@@ -227,5 +285,55 @@
       </a>
     </div>
   </footer>
+
+  <script>
+    const divisionData = {
+      rnd: {
+        title: "R&D Division",
+        content: `
+          <h3>R&D Division</h3>
+          <p>At the forefront of humanity’s transformation, our laboratories are sanctuaries of evolution and instruments of dominion. Flesh merges with machine, neurons intertwine with code, and the mind itself becomes a playground for enhancement beyond comprehension. Neural implants extend cognition into realms once reserved for gods; biomechanical prosthetics surpass the frailty of human form, rendering our subjects faster, stronger, and more precise than any natural competitor. Each experiment, each innovation, is not merely progress—it is the obliteration of limitations, the deliberate erasure of what it means to be human. Conscience, morality, and hesitation are relics of a weaker era. The future belongs to those who transcend flesh, and our laboratories are the crucibles of that inevitable evolution.</p>
+        `
+      },
+      security: {
+        title: "Security Division",
+        content: `
+          <h3>Security Division</h3>
+          <p>Safety is an illusion for the unprepared. Our omnipresent security apparatus extends into every sector, each corridor monitored by autonomous drones, predictive AI, and relentless enforcement protocols. Deviance is calculated before it manifests; threats are cataloged, isolated, and eradicated with unerring precision. Our systems see all, anticipate all, and act without pause or prejudice. In a world writhing with chaos, shadows, and disobedience, compliance is not requested—it is mandated. Those who resist are archived, neutralized, or rewritten to serve the greater order. Resistance is futile; security is eternal, absolute, and merciless.</p>
+        `
+      },
+      consumer: {
+        title: "Consumer Division",
+        content: `
+          <h3>Consumer Division</h3>
+          <p>Enhancement is no longer a privilege—it is an obligation. Our products integrate seamlessly into daily life, from bio-optimized limbs capable of superhuman feats to neural interface upgrades that tether cognition directly to global networks. Designed for mass adoption, they promise not just survival, but supremacy in a society where mechanized perfection eclipses natural limitation. Comfort, efficiency, control—these are no longer ideals, they are requirements, enforced by the subtle yet insistent hand of technology. Those who embrace augmentation thrive; those who reject it become obsolete. In the relentless march toward a perfected humanity, every citizen is invited—and every refusal is recorded.</p>
+        `
+      }
+    };
+
+    const divisionCards = document.querySelectorAll('.division-card');
+    const popover = document.getElementById('popover');
+    const popoverContent = document.getElementById('popover-content');
+    const popoverOverlay = document.getElementById('popover-overlay');
+
+    divisionCards.forEach(card => {
+      card.addEventListener('click', () => {
+        const division = card.getAttribute('data-division');
+        const data = divisionData[division];
+        if (data) {
+          popoverContent.innerHTML = data.content;
+          popover.style.display = 'block';
+          popoverOverlay.style.display = 'block';
+        }
+      });
+    });
+
+    function closePopover() {
+      popover.style.display = 'none';
+      popoverOverlay.style.display = 'none';
+    }
+
+    popoverOverlay.addEventListener('click', closePopover);
+  </script>
 </body>
 </html>
