@@ -286,44 +286,36 @@
   </footer>
 </body>
   
-  <script>
-  const divisionCards = document.querySelectorAll('.division-card');
-  const infoPanel = document.getElementById('division-info');
-  const titleEl = document.getElementById('division-title');
-  const descEl = document.getElementById('division-description');
+ <script>
+const cards = document.querySelectorAll('.card');
+const infoPanel = document.querySelector('.info-panel');
+let activeCard = null;
 
-  let currentCard = null;
+cards.forEach(card => {
+  card.addEventListener('click', () => {
+    // If clicking the same card, do nothing
+    if (activeCard === card) return;
 
-  divisionCards.forEach(card => {
-    card.addEventListener('click', () => {
-      const isSameCard = card === currentCard;
-
-      if (isSameCard) {
-        // Clicked same card -> close panel
-        infoPanel.classList.remove('active');
-        currentCard = null;
-        return;
-      }
-
-      // Clicked a new card -> update content
-      titleEl.textContent = card.dataset.title;
-      descEl.textContent = card.dataset.description;
-
-      // Optional: dynamic background
-      if (card.dataset.bg) {
-        infoPanel.style.backgroundImage = `url(${card.dataset.bg})`;
-        infoPanel.style.backgroundSize = 'cover';
-        infoPanel.style.backgroundPosition = 'center';
-      }
-
-      // Animate open/close
-      infoPanel.classList.remove('active');
-      void infoPanel.offsetWidth; // trigger reflow to restart animation
-      infoPanel.classList.add('active');
-      
-      infoPanel.scrollIntoView({ behavior: 'smooth' });
-      currentCard = card;
-    });
+    activeCard = card;
+    showCardInfo(card);
   });
+});
+
+function showCardInfo(card) {
+  infoPanel.querySelector('.title').textContent = card.dataset.title || '';
+  infoPanel.querySelector('.description').textContent = card.dataset.description || '';
+
+  // dynamic background
+  const bgUrl = card.dataset.bg;
+  if (bgUrl) {
+    infoPanel.style.backgroundImage = `url(${bgUrl})`;
+    infoPanel.style.backgroundSize = 'cover';
+    infoPanel.style.backgroundPosition = 'center';
+  } else {
+    infoPanel.style.backgroundImage = '';
+  }
+
+  infoPanel.classList.add('visible');
+}
 </script>
 </html>
