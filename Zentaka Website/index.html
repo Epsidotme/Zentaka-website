@@ -99,21 +99,19 @@
   scrollbar-color: #666 #0a0a0a; /* thumb | track */
 }
 
-     .division-card {
-    cursor: pointer;
-    display: inline-block;
-    margin: 10px;
-    padding: 20px;
-    background: #333;
-    color: white;
-    border-radius: 8px;
-    transition: transform 0.2s;
-  }
+    .division-card {
+  position: relative;
+  color: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  cursor: pointer;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  user-select: text;
+  margin-bottom: 1rem;
+}
 
-  .division-card:hover {
-    transform: scale(1.05);
-  }
-    
     .division-card .overlay {
   position: absolute;
   inset: 0;
@@ -131,35 +129,26 @@
     
 .hidden { display: none; }
 
-   #division-info {
-    position: fixed;
-    top: 10%;
-    left: 50%;
-    transform: translateX(-50%) scale(0.8);
-    width: 400px;
-    padding: 20px;
-    background: #222 url('') no-repeat center/cover;
-    color: white;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    opacity: 0;
-    pointer-events: none;
-    transition: transform 0.4s ease, opacity 0.4s ease;
-  }
+    #division-info {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  display: none;
+}
 
-  #division-info.show {
-    opacity: 1;
-    pointer-events: auto;
-    transform: translateX(-50%) scale(1);
-  }
+#division-info.show {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
 
-  #division-info.hide {
-    opacity: 0;
-    transform: translateX(-50%) scale(0.8);
-  }
 
-  #division-info.hidden {
-    display: none;
+#division-info.hide {
+  opacity: 0;
+  transform: scaleY(0.95);
+  max-height: 0;
+}
+
     
   </style>
 </head>
@@ -307,56 +296,39 @@
 </body>
   
 <script>
-  // Select all division cards and the info panel elements
-  const divisionCards = document.querySelectorAll('.division-card');
-  const infoPanel = document.getElementById('division-info');
-  const divisionTitle = document.getElementById('division-title');
-  const divisionDescription = document.getElementById('division-description');
+const divisionCards = document.querySelectorAll('.division-card');
+const infoPanel = document.getElementById('division-info');
+const divisionTitle = document.getElementById('division-title');
+const divisionDescription = document.getElementById('division-description');
 
-  // Function to show info panel with card data
-  function showDivisionInfo(card) {
-    const title = card.getAttribute('data-title');
-    const description = card.getAttribute('data-description');
-    const bg = card.getAttribute('data-bg');
+let activeCard = null;
 
-    divisionTitle.textContent = title;
-    divisionDescription.textContent = description;
-    infoPanel.style.backgroundImage = `url(${bg})`;
+divisionCards.forEach(card => {
+  card.addEventListener('click', () => {
+    const title = card.dataset.title;
+    const description = card.dataset.description;
+    const bg = card.dataset.bg;
 
-    infoPanel.classList.remove('hidden', 'hide');
-    infoPanel.classList.add('show');
-  }
-
-  // Function to hide info panel
-  function hideDivisionInfo() {
-    infoPanel.classList.remove('show');
-    infoPanel.classList.add('hide');
-
-    setTimeout(() => {
-      infoPanel.classList.add('hidden');
-    }, 500); // match CSS transition duration
-  }
-
-  // Add click events to each card
-  divisionCards.forEach(card => {
-    card.addEventListener('click', () => {
-      // If clicking the same card, toggle the panel
-      if (infoPanel.classList.contains('show') && divisionTitle.textContent === card.getAttribute('data-title')) {
-        hideDivisionInfo();
-      } else {
-        showDivisionInfo(card);
-        // Scroll into view smoothly
-        infoPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-  });
-
-  // Optional: click outside panel to close
-  document.addEventListener('click', (e) => {
-    if (!infoPanel.contains(e.target) && ![...divisionCards].some(card => card.contains(e.target))) {
-      if (infoPanel.classList.contains('show')) hideDivisionInfo();
+    if (activeCard === card) {
+      // Hide panel if clicking the same card
+      infoPanel.classList.remove('show');
+      infoPanel.classList.add('hide');
+      activeCard = null;
+    } else {
+      divisionTitle.textContent = title;
+      divisionDescription.textContent = description;
+      infoPanel.style.backgroundImage = `url('${bg}')`;
+      infoPanel.classList.remove('hide');
+      infoPanel.classList.add('show');
+      activeCard = card;
+      // Scroll to info panel smoothly
+      infoPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   });
+});
 </script>
-  
+
+
+
+
 </html>
