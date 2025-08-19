@@ -295,41 +295,40 @@
 </body>
   
 <script>
-  const cards = document.querySelectorAll('.division-card');
-  const infoPanel = document.getElementById('division-info');
-  const titleEl = document.getElementById('division-title');
-  const descEl = document.getElementById('division-description');
+const cards = document.querySelectorAll('.division-card');
+const infoPanel = document.getElementById('division-info');
+const titleEl = document.getElementById('division-title');
+const descEl = document.getElementById('division-description');
 
-  let currentTimeout;
+let currentVisible = null;
 
-  cards.forEach(card => {
-    card.addEventListener('click', () => {
-      const title = card.dataset.title;
-      const description = card.dataset.description;
-      const bg = card.dataset.bg;
+cards.forEach(card => {
+  card.addEventListener('click', () => {
+    const title = card.dataset.title;
+    const description = card.dataset.description;
+    const bg = card.dataset.bg;
 
-      // If panel is already showing the clicked division, do nothing
-      if (infoPanel.classList.contains('show') && titleEl.textContent === title) return;
-
-      // Close current panel first
+    // If clicking the currently visible card, hide it
+    if (currentVisible === card) {
       infoPanel.classList.remove('show');
       infoPanel.classList.add('hide');
+      currentVisible = null;
+      return;
+    }
 
-      // Wait for closing animation to finish before opening new content
-      clearTimeout(currentTimeout);
-      currentTimeout = setTimeout(() => {
-        titleEl.textContent = title;
-        descEl.textContent = description;
-        infoPanel.style.backgroundImage = `url(${bg})`;
+    // Update info panel content
+    titleEl.textContent = title;
+    descEl.textContent = description;
+    infoPanel.style.backgroundImage = `url('${bg}')`;
 
-        infoPanel.classList.remove('hide');
-        infoPanel.classList.add('show');
-      }, 400); // match CSS transition duration
-    });
+    // Show panel with animation
+    infoPanel.classList.remove('hide');
+    infoPanel.classList.add('show');
+    currentVisible = card;
+
+    // Scroll into view smoothly
+    infoPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
+});
 </script>
-
-
-
-
 </html>
