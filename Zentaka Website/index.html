@@ -130,6 +130,8 @@
 .hidden { display: none; }
 
      #division-info {
+  overflow: hidden;
+  height: 0;
   transition: opacity 0.5s ease, transform 0.5s ease;
   opacity: 0;
   transform: scaleY(0.95);
@@ -312,33 +314,31 @@ divisionCards.forEach(card => {
 
     const isSameCard = activeCard === card;
 
-    // Reset if same card clicked
+    // If clicking the same card, collapse panel
     if (isSameCard) {
-      infoPanel.classList.remove('active');
-      infoPanel.classList.add('fade-out');
+      infoPanel.style.height = '0px';
       setTimeout(() => {
         infoPanel.classList.add('hidden');
-        infoPanel.classList.remove('fade-out');
-      }, 500); // matches transition duration
+      }, 300); // matches CSS transition duration
       activeCard = null;
       return;
     }
 
-    // Update panel content
+    // Update content
     divisionTitle.textContent = title;
     divisionDescription.textContent = description;
     infoPanel.style.backgroundImage = `url('${bg}')`;
+    infoPanel.classList.remove('hidden');
 
-    // Show panel
-    infoPanel.classList.remove('hidden', 'fade-out');
-    // Force reflow to allow transition on first click
-    void infoPanel.offsetWidth;
-    infoPanel.classList.add('active');
+    // Set dynamic height to match content
+    const contentHeight = infoPanel.scrollHeight;
+    infoPanel.style.height = contentHeight + 'px';
 
     activeCard = card;
   });
 });
 </script>
+
 
 
 </html>
