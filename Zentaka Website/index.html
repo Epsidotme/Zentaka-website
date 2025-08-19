@@ -131,23 +131,24 @@
 
     #division-info {
   opacity: 0;
-  transform: translateY(-10px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-  display: none;
+  transform: translateY(-10px) scaleY(0.95);
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.5s ease, transform 0.5s ease, max-height 0.5s ease;
 }
 
 #division-info.show {
-  display: block;
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scaleY(1);
+  max-height: 500px; /* or whatever fits your content */
 }
-
 
 #division-info.hide {
   opacity: 0;
-  transform: scaleY(0.95);
+  transform: translateY(-10px) scaleY(0.95);
   max-height: 0;
 }
+
 
     
   </style>
@@ -303,48 +304,47 @@ const divisionDescription = document.getElementById('division-description');
 
 let currentOpenCard = null;
 
-// Function to show info panel
-function showInfo(card) {
+// Function to update content
+function updateContent(card) {
   divisionTitle.textContent = card.dataset.title;
   divisionDescription.textContent = card.dataset.description;
   divisionInfo.style.backgroundImage = `url(${card.dataset.bg})`;
+}
 
-  divisionInfo.classList.remove('hide', 'hidden');
-  // Trigger reflow to restart transition
-  void divisionInfo.offsetWidth;
+// Function to open panel with animation
+function openInfo(card) {
+  updateContent(card);
+  divisionInfo.classList.remove('hide');
   divisionInfo.classList.add('show');
-
   currentOpenCard = card;
 }
 
-// Function to hide info panel
-function hideInfo() {
+// Function to close panel with animation
+function closeInfo(callback) {
   divisionInfo.classList.remove('show');
   divisionInfo.classList.add('hide');
 
-  // Wait for transition to finish then hide completely
-  setTimeout(() => {
-    divisionInfo.classList.add('hidden');
-  }, 500); // match your CSS transition duration
-
+  divisionInfo.addEventListener('transitionend', function handler() {
+    divisionInfo.removeEventListener('transitionend', handler);
+    if (callback) callback();
+  });
   currentOpenCard = null;
 }
 
 divisionCards.forEach(card => {
   card.addEventListener('click', () => {
     if (currentOpenCard === card) {
-      // Clicked same card, close it
-      hideInfo();
+      // Same card clicked: close
+      closeInfo();
+    } else if (currentOpenCard) {
+      // Different card clicked: close first, then open new
+      closeInfo(() => openInfo(card));
     } else {
-      // Open new card
-      showInfo(card);
+      // Nothing open: open new
+      openInfo(card);
     }
   });
 });
 </script>
-
-
-
-
 
 </html>
