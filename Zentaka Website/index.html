@@ -136,9 +136,21 @@
   overflow: hidden;
 }
 
+#division-info {
+  transition: all 0.5s ease, opacity 0.5s ease;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+}
+
 #division-info.active {
-  max-height: 500px; /* adjust for content */
+  max-height: 500px; /* adjust as needed */
   opacity: 1;
+}
+
+#division-info.fade-out {
+  opacity: 0;
+  max-height: 0;
 }
     
   </style>
