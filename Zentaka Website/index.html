@@ -208,7 +208,7 @@
           With headquarters in the Neo-Tokyo Arcology and operations in over 80 territories, Zentaka remains at the forefront of post-human innovation, seamlessly integrating man and machine.
         </p>
         <p class="text-white mb-6">
-          Founded in 2047 by visionary industrialist Epsi, the company rose to prominence through exclusive military contracts and rapid advancements in neural mesh technology. Instrumental to Zentaka's cutting-edge developments is <span class="redacted">Redacted</span> <span class="redacted">Redacted</span>, a master schematics engineer whose designs have shaped the next generation of cybernetic systems. Today, Zentaka's subsidiaries span civilian prosthetics, surveillance AI, private security, and consciousness preservation.
+          Founded in 2047 by visionary industrialist Epsi, the company rose to prominence through exclusive military contracts and rapid advancements in neural mesh technology. Instrumental to Zentaka's cutting-edge developments is <span class="redacted">Redacted</span> USR-1FABFB90 <span class="redacted">Redacted</span>, a master schematics engineer whose designs have shaped the next generation of cybernetic systems. Today, Zentaka's subsidiaries span civilian prosthetics, surveillance AI, private security, and consciousness preservation.
         </p>
       </div>
       <div class="md:w-1/3 flex justify-center mt-6 md:mt-0 md:justify-end">
@@ -220,32 +220,152 @@
   </section>
 
   <!-- Partners -->
-  <section id="partners" class="py-20 px-6 md:px-20 relative z-10 text-center border-2 border-grey-800 rounded-xl overflow-hidden">
-    <img src="Assets/images/image2.png" alt="" class="absolute inset-0 w-full h-full object-cover select-none pointer-events-none" draggable="false" oncontextmenu="return false;">
-    <div class="relative z-10">
-      <h2 class="text-4xl font-bold text-white mb-12">Our Partners</h2>
-      <div class="flex justify-center">
-        <div class="grid grid-cols-3 gap-8 items-center">
-          <div class="flex justify-center">
-            <a href="https://vrchat.com/home/group/grp_6b27de2c-711d-498f-a358-205fff95001b" target="_blank" rel="noopener noreferrer">
-              <img src="Assets/images/arasaka.png" alt="Arasaka" class="h-24 object-contain select-none transition-transform duration-300 ease-in-out hover:scale-110 hover:drop-shadow-[0_0_10px_white]" draggable="false">
-            </a>
-          </div>
-          <div class="flex justify-center">
-            <a href="https://vrchat.com/home/group/grp_e372baf9-9324-4b92-98a7-5589ec09e1bc" target="_blank" rel="noopener noreferrer">
-              <img src="Assets/images/moxxxi.png" alt="Moxxxi" class="h-24 object-contain select-none transition-transform duration-300 ease-in-out hover:scale-110 hover:drop-shadow-[0_0_10px_white]" draggable="false">
-            </a>
-          </div>
-          <div class="flex justify-center">
-            <a href="https://vrchat.com/home/group/grp_459c3619-aec6-48fd-98d4-50ae1a51e7cf" target="_blank" rel="noopener noreferrer">
-              <img src="Assets/images/smashed.png" alt="Smashed" class="h-24 object-contain select-none transition-transform duration-300 ease-in-out hover:scale-110 hover:drop-shadow-[0_0_10px_white]" draggable="false">
-            </a>
-          </div>
+<section id="partners" class="py-20 px-6 md:px-20 relative z-10 text-center border-2 border-grey-800 rounded-xl overflow-hidden">
+  <img src="Assets/images/image2.png" alt="" class="absolute inset-0 w-full h-full object-cover select-none pointer-events-none opacity-20" draggable="false" oncontextmenu="return false;">
+  
+  <div class="relative z-10">
+    <h2 class="text-4xl font-bold text-white mb-12 tracking-widest">Our Partners</h2>
+    
+    <div class="flex justify-center">
+      <div class="grid grid-cols-3 gap-8 items-center">
+        
+        <!-- Partner Logo (Triggers Modal) -->
+        <div class="flex justify-center">
+          <button onclick="openModal('arasakaModal')" class="focus:outline-none">
+            <img src="Assets/images/arasaka.png" alt="Arasaka" class="h-24 object-contain select-none transition-transform duration-300 ease-in-out hover:scale-110 hover:drop-shadow-[0_0_15px_cyan]" draggable="false">
+          </button>
         </div>
+        
+        <div class="flex justify-center">
+          <button onclick="openModal('moxxxiModal')" class="focus:outline-none">
+            <img src="Assets/images/moxxxi.png" alt="Moxxxi" class="h-24 object-contain select-none transition-transform duration-300 ease-in-out hover:scale-110 hover:drop-shadow-[0_0_15px_pink]" draggable="false">
+          </button>
+        </div>
+        
+        <div class="flex justify-center">
+          <button onclick="openModal('smashedModal')" class="focus:outline-none">
+            <img src="Assets/images/smashed.png" alt="Smashed" class="h-24 object-contain select-none transition-transform duration-300 ease-in-out hover:scale-110 hover:drop-shadow-[0_0_15px_red]" draggable="false">
+          </button>
+        </div>
+        
       </div>
-      <p class="text-white text-center mt-8">We collaborate with leading innovators to push for a better tomorrow.</p>
     </div>
-  </section>
+    
+    <p class="text-white text-center mt-8">We collaborate with leading innovators to push for a better tomorrow.</p>
+  </div>
+</section>
+
+
+<!-- Modals -->
+<!-- Arasaka Modal -->
+<div id="arasakaModal" class="modal hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50 overflow-auto">
+  <div class="bg-black border border-cyan-400 rounded-2xl p-10 max-w-3xl w-full shadow-[0_0_30px_cyan] relative mx-4 my-8">
+    <button onclick="closeModal('arasakaModal')" class="absolute top-4 right-4 text-cyan-400 text-3xl font-bold hover:text-white">✕</button>
+    <img src="Assets/images/arasaka.png" alt="Arasaka" class="h-20 mx-auto mb-6">
+
+    <div class="flex flex-col md:flex-row items-center gap-8">
+<img src="Assets/images/V.png" alt="V" class="w-64 h-64 md:w-64 md:h-64 sm:w-48 sm:h-48 object-cover rounded-xl border-2 border-cyan-400 shadow-[0_0_20px_cyan]">
+      <div class="text-left">
+        <h3 class="text-3xl font-bold text-cyan-400">Arasaka Corporation</h3>
+        <p class="text-gray-300 mt-2 text-sm leading-relaxed">
+          <span class="text-white">Owner:</span> V<br>
+          Arasaka Corporation is a global Japanese megacorp specializing in corporate security, banking, and advanced manufacturing. 
+          Known for precision, efficiency, and an iron grip over both corporate and political networks, Arasaka blends cutting-edge technology 
+          with deep-rooted Japanese tradition.<br><br>
+          Within VRChat, we extend our influence to **exclusive after-hours entertainment, private club experiences, and curated events** 
+          for members and select collaborators. All participants must be <span class="text-red-400">+18</span> to join.<br><br>
+          <span class="italic text-cyan-300">Arasaka: Excellence in every system, loyalty in every connection.</span>
+        </p>
+        <a href="https://vrchat.com/home/group/grp_6b27de2c-711d-498f-a358-205fff95001b" target="_blank" class="inline-block mt-4 px-5 py-2 border border-cyan-400 text-cyan-300 rounded-lg hover:bg-cyan-400 hover:text-black transition">
+          Enter Network →
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Moxxxi Modal -->
+<div id="moxxxiModal" class="modal hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50 overflow-auto">
+  <div class="bg-black border border-purple-400 rounded-2xl p-10 max-w-3xl w-full shadow-[0_0_30px_purple] relative mx-4 my-8">
+    <button onclick="closeModal('moxxxiModal')" class="absolute top-4 right-4 text-purple-400 text-3xl font-bold hover:text-white">✕</button>
+    <img src="Assets/images/moxxxi.png" alt="Moxxxi" class="h-20 mx-auto mb-6 pointer-events-none">
+
+    <div class="flex flex-col md:flex-row items-center gap-8">
+      <img src="Assets/images/typhoonwes.png" alt="Typhoon Wes" class="w-64 h-64 object-cover rounded-xl border-2 border-purple-400 shadow-[0_0_20px_purple] pointer-events-none">
+      <div class="text-left">
+        <h3 class="text-3xl font-bold text-purple-400">Moxxxi Syndicate</h3>
+        <p class="text-gray-300 mt-2 text-sm leading-relaxed">
+          <span class="text-white">Owner:</span> Typhoon Wes<br>
+          Moxxxi Syndicate is a neon-drenched 18+ entertainment collective where nightlife meets chaos. We specialize in **dance events, social parties, and high-energy drinking sessions**, all within a secure, highly moderated environment. Glamorous, wild, and unapologetically bold, we thrive at the heart of the VR underworld.<br><br>
+          <strong>What We Offer:</strong><br>
+          Φ Club Events Every Saturday<br>
+          Φ Highly Moderated 18+ Club<br>
+          Φ Kind and Dedicated Staff<br>
+          Φ Tons of Server Emotes<br>
+          Φ Organized Channels & Promotion Boards<br>
+          Φ Avatar Market Access<br><br>
+          <span class="text-red-400">╚═֍ Drinking Everyday @3:30pm CST</span><br>
+          <span class="text-red-400">╚═֍ Dance Events Saturday @5pm CST</span>
+        </p>
+        <a href="https://vrchat.com/home/group/grp_e372baf9-9324-4b92-98a7-5589ec09e1bc" target="_blank" class="inline-block mt-4 px-5 py-2 border border-pink-400 text-pink-300 rounded-lg hover:bg-pink-400 hover:text-black transition">
+          Enter Network →
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Smashed Modal -->
+<div id="smashedModal" class="modal hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50 overflow-auto">
+  <div class="bg-black border border-red-500 rounded-2xl p-10 max-w-3xl w-full shadow-[0_0_30px_red] relative mx-4 my-8">
+    <button onclick="closeModal('smashedModal')" class="absolute top-4 right-4 text-red-400 text-3xl font-bold hover:text-white">✕</button>
+    <img src="Assets/images/smashed.png" alt="Smashed" class="h-20 mx-auto mb-6 pointer-events-none">
+
+    <div class="flex flex-col md:flex-row items-center gap-8">
+      <img src="Assets/images/muffin.png" alt="muffin" class="max-w-40 h-auto object-cover rounded-xl border-2 border-red-500 shadow-[0_0_15px_red] pointer-events-none">
+      <div class="text-left">
+        <h3 class="text-3xl font-bold text-purple-400">Smashed Industries</h3>
+        <p class="text-gray-300 mt-2 text-sm leading-relaxed">
+          <span class="text-white">Owner:</span> Muffin<br>
+          Forged in neon and fueled by excess, <span class="text-purple-400">Smashed Industries</span> operates the city’s most premium entertainment complex. 
+          Within our walls you’ll find <span class="text-white">custom card decks, Connect 4, immersive arcade suites, and high-stakes challenges</span> like 
+          Never Have I Ever, Shot Roulette, Russian Roulette, Battle Shots, Buckshot Roulette, and Spin the Wheel.<br><br>
+          For the refined gambler: <span class="text-white">Chess, Checkers, Reversi, and buckshot Roulette.</span> 
+          For the competitors: <span class="text-white">Beer Pong, Pool, and Basketball.</span><br><br>
+          Secure <span class="text-white">private lounges</span> for your syndicate, and immerse yourself in over <span class="text-red-400">800 curated tracks</span> 
+          synced with AudioLink systems — an atmosphere engineered to overwhelm the senses.<br><br>
+          <span class="italic text-orange-300">Smashed Industries: premium nightlife for a city that never sleeps. Consume responsibly.</span>
+        </p>
+        <a href="https://vrchat.com/home/group/grp_459c3619-aec6-48fd-98d4-50ae1a51e7cf" target="_blank" class="inline-block mt-4 px-5 py-2 border border-red-500 text-red-300 rounded-lg hover:bg-red-500 hover:text-black transition">
+          Enter Network →
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Scripts -->
+<script>
+  function openModal(id) {
+    document.getElementById(id).classList.remove("hidden");
+  }
+  function closeModal(id) {
+    document.getElementById(id).classList.add("hidden");
+  }
+  // Optional: close modal when clicking outside content
+  document.querySelectorAll('.modal').forEach(modal => {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.add('hidden');
+      }
+    });
+  });
+</script>
+
 
   <!-- Divisions -->
   <section id="divisions" class="py-20 px-6 md:px-20 relative z-10 text-center border-2 border-grey-800 rounded-xl overflow-hidden">
@@ -305,7 +425,7 @@
 
   <script>
     const divisionData = {
-     rnd: {
+      rnd: {
   title: "R&D Division",
   content: `
     <h3>R&D Division</h3>
@@ -341,8 +461,8 @@ consumer: {
   `,
   background: "url('Assets/images/consumer-bg.png')"
 }
-    };
 
+    };
 
     const divisionCards = document.querySelectorAll('.division-card');
     const popover = document.getElementById('popover');
