@@ -99,19 +99,21 @@
   scrollbar-color: #666 #0a0a0a; /* thumb | track */
 }
 
-    .division-card {
-  position: relative;
-  color: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  cursor: pointer;
-  overflow: hidden;
-  background-size: cover;
-  background-position: center;
-  user-select: text;
-  margin-bottom: 1rem;
-}
+     .division-card {
+    cursor: pointer;
+    display: inline-block;
+    margin: 10px;
+    padding: 20px;
+    background: #333;
+    color: white;
+    border-radius: 8px;
+    transition: transform 0.2s;
+  }
 
+  .division-card:hover {
+    transform: scale(1.05);
+  }
+    
     .division-card .overlay {
   position: absolute;
   inset: 0;
@@ -129,27 +131,35 @@
     
 .hidden { display: none; }
 
-    #division-info {
-  opacity: 0;
-  transform: translateY(-10px) scaleY(0.95);
-  max-height: 0;
-  overflow: hidden;
-  transition: opacity 0.5s ease, transform 0.5s ease, max-height 0.5s ease;
-}
+   #division-info {
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%) scale(0.8);
+    width: 400px;
+    padding: 20px;
+    background: #222 url('') no-repeat center/cover;
+    color: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+  }
 
-#division-info.show {
-  opacity: 1;
-  transform: translateY(0) scaleY(1);
-  max-height: 500px; /* or whatever fits your content */
-}
+  #division-info.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) scale(1);
+  }
 
-#division-info.hide {
-  opacity: 0;
-  transform: translateY(-10px) scaleY(0.95);
-  max-height: 0;
-}
+  #division-info.hide {
+    opacity: 0;
+    transform: translateX(-50%) scale(0.8);
+  }
 
-
+  #division-info.hidden {
+    display: none;
     
   </style>
 </head>
