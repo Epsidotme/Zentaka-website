@@ -130,16 +130,16 @@
 .hidden { display: none; }
 
      #division-info {
-    transition: all 0.4s ease;
-    max-height: 0;
-    opacity: 0;
-    overflow: hidden;
-  }
-    
-  #division-info.active {
-    max-height: 500px; /* adjust as needed */
-    opacity: 1;
-  }
+  transition: all 0.5s ease;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+}
+
+#division-info.active {
+  max-height: 500px; /* adjust for content */
+  opacity: 1;
+}
     
   </style>
 </head>
@@ -287,30 +287,42 @@
 </body>
   
  <script>
-const cards = document.querySelectorAll('.division-card');
+const divisionCards = document.querySelectorAll('.division-card');
 const infoPanel = document.getElementById('division-info');
 const divisionTitle = document.getElementById('division-title');
 const divisionDescription = document.getElementById('division-description');
 
-cards.forEach(card => {
+let activeCard = null;
+
+divisionCards.forEach(card => {
   card.addEventListener('click', () => {
-    // Set the title and description
+    // Toggle the panel if clicking the same card
+    if (activeCard === card) {
+      infoPanel.classList.remove('active');
+      activeCard = null;
+      return;
+    }
+
+    activeCard = card;
+
+    // Update content
     divisionTitle.textContent = card.dataset.title;
     divisionDescription.textContent = card.dataset.description;
 
-    // Set background if specified
-    if (card.dataset.bg) {
-      infoPanel.style.backgroundImage = `url(${card.dataset.bg})`;
+    // Update background image
+    const bgUrl = card.dataset.bg;
+    if (bgUrl) {
+      infoPanel.style.backgroundImage = `url('${bgUrl}')`;
     }
 
-    // Show the info panel
+    // Show panel with animation
     infoPanel.classList.add('active');
-    infoPanel.classList.remove('hidden');
 
-    // Scroll to the info panel smoothly
+    // Scroll to panel smoothly
     infoPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 });
 </script>
+
 
 </html>
