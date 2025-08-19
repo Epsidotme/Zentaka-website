@@ -295,53 +295,41 @@
 </body>
   
 <script>
+  // Get all division cards
   const cards = document.querySelectorAll('.division-card');
-  const infoPanel = document.getElementById('division-info');
-  const title = document.getElementById('division-title');
-  const description = document.getElementById('division-description');
-
-  let activeCard = null;
+  const infoSection = document.getElementById('division-info');
+  const titleEl = document.getElementById('division-title');
+  const descEl = document.getElementById('division-description');
 
   cards.forEach(card => {
     card.addEventListener('click', () => {
-      const cardTitle = card.getAttribute('data-title');
-      const cardDescription = card.getAttribute('data-description');
-      const cardBg = card.getAttribute('data-bg');
+      const title = card.dataset.title;
+      const description = card.dataset.description;
+      const bg = card.dataset.bg;
 
-      // If clicking the same card, toggle close
-      if (activeCard === card) {
-        infoPanel.classList.remove('show');
-        infoPanel.classList.add('hide');
-        activeCard = null;
-        return;
-      }
+      // Update info panel content
+      titleEl.textContent = title;
+      descEl.textContent = description;
 
-      // If another card is active, close first
-      if (activeCard) {
-        infoPanel.classList.remove('show');
-        infoPanel.classList.add('hide');
-        // Wait for hide animation before showing new content
-        setTimeout(() => {
-          title.textContent = cardTitle;
-          description.textContent = cardDescription;
-          infoPanel.style.backgroundImage = `url(${cardBg})`;
-          infoPanel.classList.remove('hide');
-          infoPanel.classList.add('show');
-          activeCard = card;
-        }, 300); // match animation duration
-        return;
-      }
+      // Update background if you want
+      infoSection.style.backgroundImage = `url('${bg}')`;
 
-      // No active card, just open
-      title.textContent = cardTitle;
-      description.textContent = cardDescription;
-      infoPanel.style.backgroundImage = `url(${cardBg})`;
-      infoPanel.classList.remove('hide');
-      infoPanel.classList.add('show');
-      activeCard = card;
+      // Show info panel
+      infoSection.classList.remove('hidden');
+      infoSection.classList.add('show');
     });
   });
+
+  // Optional: click outside to hide
+  infoSection.addEventListener('click', (e) => {
+    if (e.target === infoSection) {
+      infoSection.classList.remove('show');
+      infoSection.classList.add('hide');
+      setTimeout(() => infoSection.classList.add('hidden'), 400);
+    }
+  });
 </script>
+
 
 
 </html>
