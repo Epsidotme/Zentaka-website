@@ -287,35 +287,30 @@
 </body>
   
  <script>
-const cards = document.querySelectorAll('.card');
-const infoPanel = document.querySelector('.info-panel');
-let activeCard = null;
+const cards = document.querySelectorAll('.division-card');
+const infoPanel = document.getElementById('division-info');
+const divisionTitle = document.getElementById('division-title');
+const divisionDescription = document.getElementById('division-description');
 
 cards.forEach(card => {
   card.addEventListener('click', () => {
-    // If clicking the same card, do nothing
-    if (activeCard === card) return;
+    // Set the title and description
+    divisionTitle.textContent = card.dataset.title;
+    divisionDescription.textContent = card.dataset.description;
 
-    activeCard = card;
-    showCardInfo(card);
+    // Set background if specified
+    if (card.dataset.bg) {
+      infoPanel.style.backgroundImage = `url(${card.dataset.bg})`;
+    }
+
+    // Show the info panel
+    infoPanel.classList.add('active');
+    infoPanel.classList.remove('hidden');
+
+    // Scroll to the info panel smoothly
+    infoPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 });
-
-function showCardInfo(card) {
-  infoPanel.querySelector('.title').textContent = card.dataset.title || '';
-  infoPanel.querySelector('.description').textContent = card.dataset.description || '';
-
-  // dynamic background
-  const bgUrl = card.dataset.bg;
-  if (bgUrl) {
-    infoPanel.style.backgroundImage = `url(${bgUrl})`;
-    infoPanel.style.backgroundSize = 'cover';
-    infoPanel.style.backgroundPosition = 'center';
-  } else {
-    infoPanel.style.backgroundImage = '';
-  }
-
-  infoPanel.classList.add('visible');
-}
 </script>
+
 </html>
