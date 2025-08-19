@@ -223,23 +223,23 @@
 
   <!-- Divisions -->
   <section id="divisions" class="py-20 px-6 md:px-20 relative z-10 text-center border-2 border-grey-800 rounded-xl overflow-hidden">
-    <img src="Assets/images/image3.png" alt="" class="absolute inset-0 w-full h-full object-cover select-none pointer-events-none" draggable="false" oncontextmenu="return false;" data-bg="Assets/images/rd-bg.png">
+    <img src="Assets/images/image3.png" alt="" class="absolute inset-0 w-full h-full object-cover select-none pointer-events-none" draggable="false" oncontextmenu="return false;">
     <div class="relative z-10">
       <h2 class="text-4xl font-bold text-white mb-12">Our Divisions</h2>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-       <div class="bg-black p-6 rounded-xl shadow-lg border border-gray-800 hover:border-purple-500 transition cursor-pointer division-card" data-title="R&D Division" data-description="Neural implants, biomechanical prosthetics, and cybernetic innovation for tomorrow’s humanity." data-bg="Assets/images/rd-bg.png">
+       <div class="bg-black p-6 rounded-xl shadow-lg border border-gray-800 hover:border-purple-500 transition cursor-pointer division-card" data-title="R&D Division" data-description="Neural implants, biomechanical prosthetics, and cybernetic innovation for tomorrow’s humanity." data-bg="Assets/images/division1.png">
   <h3 class="text-2xl font-semibold mb-4 text-purple-400">R&D Division</h3>
   <p class="text-white">Neural implants, biomechanical prosthetics, and cybernetic innovation for tomorrow’s humanity.</p>
            <div class="overlay"></div>
 </div>
 
-<div class="bg-black p-6 rounded-xl shadow-lg border border-gray-800 hover:border-purple-500 transition cursor-pointer division-card" data-title="Security Division" data-description="Private defense systems, drones, and advanced enforcement technologies for a safer tomorrow." data-bg="Assets/images/rd-bg.png">
+<div class="bg-black p-6 rounded-xl shadow-lg border border-gray-800 hover:border-purple-500 transition cursor-pointer division-card" data-title="Security Division" data-description="Private defense systems, drones, and advanced enforcement technologies for a safer tomorrow." data-bg="Assets/images/division2.png">
   <h3 class="text-2xl font-semibold mb-4 text-purple-400">Security Division</h3>
   <p class="text-white">Private defense systems, drones, and advanced enforcement technologies for a safer tomorrow.</p>
     <div class="overlay"></div>
 </div>
 
-<div class="bg-black p-6 rounded-xl shadow-lg border border-gray-800 hover:border-purple-500 transition cursor-pointer division-card" data-title="Consumer Division" data-description="Affordable augmentations and enhancements designed for everyday citizens and global adoption." data-bg="Assets/images/rd-bg.png">
+<div class="bg-black p-6 rounded-xl shadow-lg border border-gray-800 hover:border-purple-500 transition cursor-pointer division-card" data-title="Consumer Division" data-description="Affordable augmentations and enhancements designed for everyday citizens and global adoption." data-bg="Assets/images/division3.png">
   <h3 class="text-2xl font-semibold mb-4 text-purple-400">Consumer Division</h3>
   <p class="text-white">Affordable augmentations and enhancements designed for everyday citizens and global adoption.</p>
     <div class="overlay"></div>
@@ -286,7 +286,7 @@
   </footer>
 </body>
   
- <script>
+<script>
 const divisionCards = document.querySelectorAll('.division-card');
 const infoPanel = document.getElementById('division-info');
 const divisionTitle = document.getElementById('division-title');
@@ -299,6 +299,7 @@ divisionCards.forEach(card => {
     // Toggle the panel if clicking the same card
     if (activeCard === card) {
       infoPanel.classList.remove('active');
+      infoPanel.classList.add('hidden');
       activeCard = null;
       return;
     }
@@ -311,18 +312,17 @@ divisionCards.forEach(card => {
 
     // Update background image
     const bgUrl = card.dataset.bg;
-    if (bgUrl) {
-      infoPanel.style.backgroundImage = `url('${bgUrl}')`;
-    }
+    infoPanel.style.backgroundImage = `url('${bgUrl}')`;
 
-    // Show panel with animation
-    infoPanel.classList.add('active');
-
-    // Scroll to panel smoothly
-    infoPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Show panel
+    infoPanel.classList.remove('hidden');
+    setTimeout(() => {
+      infoPanel.classList.add('active');
+    }, 50); // slight delay for transition
   });
 });
 </script>
+
 
 
 </html>
