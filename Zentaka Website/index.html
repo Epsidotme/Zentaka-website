@@ -130,28 +130,26 @@
 .hidden { display: none; }
 
      #division-info {
-  transition: all 0.5s ease;
-  max-height: 0;
+  transition: opacity 0.5s ease, transform 0.5s ease;
   opacity: 0;
+  transform: scaleY(0.95);
+  max-height: 0;
   overflow: hidden;
 }
 
-#division-info {
-  transition: all 0.5s ease, opacity 0.5s ease;
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-}
-
-#division-info.active {
-  max-height: 500px; /* adjust as needed */
+#division-info.show {
+  display: block;
   opacity: 1;
+  transform: scaleY(1);
+  max-height: 1000px; /* large enough to contain content */
 }
 
-#division-info.fade-out {
+#division-info.hide {
   opacity: 0;
+  transform: scaleY(0.95);
   max-height: 0;
 }
+
     
   </style>
 </head>
@@ -308,37 +306,39 @@ let activeCard = null;
 
 divisionCards.forEach(card => {
   card.addEventListener('click', () => {
+    const title = card.dataset.title;
+    const description = card.dataset.description;
+    const bg = card.dataset.bg;
+
     const isSameCard = activeCard === card;
 
-    if (activeCard) {
-      // Close current panel with fade-out
+    // Reset if same card clicked
+    if (isSameCard) {
       infoPanel.classList.remove('active');
       infoPanel.classList.add('fade-out');
-
       setTimeout(() => {
-        if (!isSameCard) {
-          // Update content after fade-out
-          divisionTitle.textContent = card.dataset.title;
-          divisionDescription.textContent = card.dataset.description;
-
-          infoPanel.classList.remove('fade-out', 'hidden');
-          infoPanel.classList.add('active');
-        } else {
-          // If clicking same card, hide completely
-          infoPanel.classList.add('hidden');
-        }
-      }, 500); // Match with CSS transition duration
-    } else {
-      // First open
-      divisionTitle.textContent = card.dataset.title;
-      divisionDescription.textContent = card.dataset.description;
-      infoPanel.classList.remove('hidden', 'fade-out');
-      infoPanel.classList.add('active');
+        infoPanel.classList.add('hidden');
+        infoPanel.classList.remove('fade-out');
+      }, 500); // matches transition duration
+      activeCard = null;
+      return;
     }
 
-    activeCard = isSameCard ? null : card;
+    // Update panel content
+    divisionTitle.textContent = title;
+    divisionDescription.textContent = description;
+    infoPanel.style.backgroundImage = `url('${bg}')`;
+
+    // Show panel
+    infoPanel.classList.remove('hidden', 'fade-out');
+    // Force reflow to allow transition on first click
+    void infoPanel.offsetWidth;
+    infoPanel.classList.add('active');
+
+    activeCard = card;
   });
 });
 </script>
+
 
 </html>
