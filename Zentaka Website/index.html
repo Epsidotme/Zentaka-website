@@ -305,31 +305,43 @@
 
   <script>
     const divisionData = {
-      rnd: {
-        title: "R&D Division",
-        content: `
-          <h3>R&D Division</h3>
-          <p>At the forefront of humanity’s transformation, our laboratories are sanctuaries of evolution and instruments of dominion. Flesh merges with machine, neurons intertwine with code, and the mind itself becomes a playground for enhancement beyond comprehension. Neural implants extend cognition into realms once reserved for gods; biomechanical prosthetics surpass the frailty of human form, rendering our subjects faster, stronger, and more precise than any natural competitor. Each experiment, each innovation, is not merely progress—it is the obliteration of limitations, the deliberate erasure of what it means to be human. Conscience, morality, and hesitation are relics of a weaker era. The future belongs to those who transcend flesh, and our laboratories are the crucibles of that inevitable evolution.</p>
-        `,
-        background: "url('Assets/images/rnd-bg.png')"
-      },
-      security: {
-        title: "Security Division",
-        content: `
-          <h3>Security Division</h3>
-          <p>Safety is a promise. Precision is our standard. At Zentaka, we don’t just protect—we anticipate, control, and perfect the environments our clients inhabit. Our Security Division delivers state-of-the-art cybernetic enforcers, neural-interface monitoring systems, and integrated surveillance networks, ensuring that every threat is identified and neutralized before it emerges. Every installation, every augmentation, every connected system extends our reach. Our clients experience unparalleled protection—our systems ensure compliance, predict deviations, and maintain order with unwavering efficiency. In a world of uncertainty, Zentaka Security is the constant. Trust is optional; performance is absolute. Resistance is obsolete. Safety is guaranteed.</p>
-        `,
-        background: "url('Assets/images/security-bg.png')"
-      },
-      consumer: {
-        title: "Consumer Division",
-        content: `
-          <h3>Consumer Division</h3>
-          <p>Enhancement is no longer a privilege—it is an obligation. Our products integrate seamlessly into daily life, from bio-optimized limbs capable of superhuman feats to neural interface upgrades that tether cognition directly to global networks. Designed for mass adoption, they promise not just survival, but supremacy in a society where mechanized perfection eclipses natural limitation. Comfort, efficiency, control—these are no longer ideals, they are requirements, enforced by the subtle yet insistent hand of technology. Those who embrace augmentation thrive; those who reject it become obsolete. In the relentless march toward a perfected humanity, every citizen is invited—and every refusal is recorded.</p>
-        `,
-        background: "url('Assets/images/consumer-bg.png')"
-      }
-    };
+     rnd: {
+  title: "R&D Division",
+  content: `
+    <h3>R&D Division</h3>
+    <p>At the forefront of humanity’s transformation, our laboratories are sanctuaries of evolution and instruments of dominion.</p>
+    <p>Flesh merges with machine, neurons intertwine with code, and the mind itself becomes a playground for enhancement beyond comprehension.</p>
+    <p>Neural implants extend cognition into realms once reserved for gods; biomechanical prosthetics surpass the frailty of human form, rendering our subjects faster, stronger, and more precise than any natural competitor.</p>
+    <p>Each experiment, each innovation, is not merely progress—it is the obliteration of limitations, the deliberate erasure of what it means to be human. Conscience, morality, and hesitation are relics of a weaker era.</p>
+    <p>The future belongs to those who transcend flesh, and our laboratories are the crucibles of that inevitable evolution.</p>
+  `,
+  background: "url('Assets/images/rnd-bg.png')"
+},
+security: {
+  title: "Security Division",
+  content: `
+    <h3>Security Division</h3>
+    <p>Safety is a promise. Precision is our standard.</p>
+    <p>At Zentaka, we don’t just protect—we anticipate, control, and perfect the environments our clients inhabit.</p>
+    <p>Our Security Division delivers state-of-the-art cybernetic enforcers, neural-interface monitoring systems, and integrated surveillance networks, ensuring that every threat is identified and neutralized before it emerges.</p>
+    <p>Every installation, every augmentation, every connected system extends our reach. Our clients experience unparalleled protection—our systems ensure compliance, predict deviations, and maintain order with unwavering efficiency.</p>
+    <p>In a world of uncertainty, Zentaka Security is the constant. Trust is optional; performance is absolute. Resistance is obsolete. Safety is guaranteed.</p>
+  `,
+  background: "url('Assets/images/security-bg.png')"
+},
+consumer: {
+  title: "Consumer Division",
+  content: `
+    <h3>Consumer Division</h3>
+    <p>Enhancement is no longer a privilege—it is an obligation.</p>
+    <p>Our products integrate seamlessly into daily life, from bio-optimized limbs capable of superhuman feats to neural interface upgrades that tether cognition directly to global networks.</p>
+    <p>Designed for mass adoption, they promise not just survival, but supremacy in a society where mechanized perfection eclipses natural limitation.</p>
+    <p>Comfort, efficiency, control—these are no longer ideals, they are requirements, enforced by the subtle yet insistent hand of technology.</p>
+    <p>Those who embrace augmentation thrive; those who reject it become obsolete. In the relentless march toward a perfected humanity, every citizen is invited—and every refusal is recorded.</p>
+  `,
+  background: "url('Assets/images/consumer-bg.png')"
+}
+
 
     const divisionCards = document.querySelectorAll('.division-card');
     const popover = document.getElementById('popover');
