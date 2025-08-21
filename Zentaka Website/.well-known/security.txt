@@ -1,0 +1,3 @@
+# Zentaka Security Contact
+Contact: mailto:support@zentaka.com
+Preferred-Languages: en
