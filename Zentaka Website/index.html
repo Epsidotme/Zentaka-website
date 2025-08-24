@@ -634,7 +634,316 @@
     <button class="close-btn" onclick="closePopover()">×</button>
     <div id="popover-content"></div>
   </div>
-  
+
+<!-- ZENTAKA Stock Widget (site fonts + pre-seeded history) -->
+<script>
+(() => {
+  // ---- Config ----
+  const TICKER = "ZTK";
+  const START_PRICE = 317.46;
+  const CURRENCY = "€$";
+  const VOLATILITY = 4.35;    // higher = wilder moves
+  const INTERVAL_MS = 1000;   // update frequency
+  const MAX_POINTS = 120;     // sparkline history length
+  const ACCENT = "#9333EA";   // neon purple
+  const BG = "rgba(10,10,10,0.94)";
+  const TEXT = "#E6E6E6";
+  const META = "#8A8A8A";
+  const GRID = "rgba(255,255,255,0.06)";
+
+  // ---- Host / Shadow Root ----
+  const host = document.createElement("div");
+  document.body.appendChild(host);
+  const root = host.attachShadow({mode: "open"});
+
+  // ---- Markup ----
+  root.innerHTML = `
+    <style>
+      /* Bring site fonts into Shadow DOM */
+      @font-face {
+        font-family: 'SDDystopian';
+        src: url('/assets/fonts/SDDystopian.ttf') format('truetype');
+        font-weight: normal; font-style: normal; font-display: swap;
+      }
+      @font-face {
+        font-family: 'ShareTechMono';
+        src: url('/assets/fonts/ShareTechMono-Regular.ttf') format('truetype');
+        font-weight: normal; font-style: normal; font-display: swap;
+      }
+
+      :host { all: initial; font-family: 'ShareTechMono', monospace; }
+
+      .fab {
+        position: fixed; left: 16px; bottom: 16px; z-index: 2147483646;
+        width: 46px; height: 46px; border-radius: 10px;
+        background: ${BG}; border: 1px solid ${GRID};
+        color: ${TEXT}; display: grid; place-items: center;
+        box-shadow: 0 0 8px rgba(147, 51, 234,.25), inset 0 0 8px rgba(147, 51, 234,.12);
+        cursor: pointer; user-select: none;
+      }
+      .fab:hover { box-shadow: 0 0 14px rgba(147, 51, 234,.35), inset 0 0 10px rgba(147, 51, 234,.2); }
+      .fab-icon { font: 600 16px/1.0 'ShareTechMono', monospace; letter-spacing: .02em; }
+
+      .panel {
+        position: fixed; left: 16px; bottom: 72px; z-index: 2147483646;
+        width: min(360px, calc(100vw - 32px));
+        background: ${BG}; border: 1px solid ${GRID}; border-radius: 12px;
+        box-shadow: 0 0 16px rgba(147, 51, 234,.25), inset 0 0 10px rgba(147, 51, 234,.1);
+        color: ${TEXT}; overflow: hidden; display: none;
+      }
+      .header {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 10px 12px; border-bottom: 1px solid ${GRID}; cursor: move;
+        background: linear-gradient(to right, rgba(147, 51, 234, .08), transparent);
+        user-select: none;
+      }
+      .h-left { display: flex; gap: 8px; align-items: baseline; }
+      .title { font: 18px/1.1 'SDDystopian', sans-serif; letter-spacing: .06em; }
+
+      .h-actions { display:flex; gap:6px; }
+      .btn {
+        border:1px solid ${GRID}; background: transparent; color:${META};
+        border-radius: 8px; padding: 4px 8px; cursor:pointer;
+        font: 12px/1.1 'ShareTechMono', monospace;
+      }
+      .btn:hover { color:${TEXT}; border-color:${ACCENT}; }
+
+      .body { padding: 12px; display: grid; gap: 10px; }
+      .row { display:grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items:end; }
+
+      .price { font: 600 20px/1.2 'ShareTechMono', monospace; letter-spacing:.02em; }
+      .sub   { font: 11px/1.2 'ShareTechMono', monospace; color:${META}; }
+
+      .delta {
+        font: 12px/1.2 'ShareTechMono', monospace;
+        padding: 4px 8px; border-radius: 8px; border:1px solid ${GRID};
+      }
+      .delta.up { color:#18d17b; border-color: rgba(24,209,123,.35); }
+      .delta.down { color:#ff6b6b; border-color: rgba(255,107,107,.35); }
+
+      .chart-wrap { position: relative; height: 120px; background: rgba(255,255,255,0.02); border:1px solid ${GRID}; border-radius: 10px; overflow: hidden; }
+      canvas { width: 100%; height: 100%; display:block; }
+      .xbar { position:absolute; left:0; right:0; top:50%; height:1px; background:${GRID}; }
+      .grid-v { position:absolute; top:0; bottom:0; width:1px; background:${GRID}; opacity:.5; }
+      .grid-v:nth-child(odd){ opacity:.25; }
+
+      .foot {
+        display:flex; justify-content: space-between; align-items:center; gap:8px;
+        color:${META}; font: 11px/1.2 'ShareTechMono', monospace;
+      }
+      .dot { width:8px; height:8px; border-radius:50%; background:${ACCENT}; box-shadow:0 0 8px ${ACCENT}; }
+      .hidden { display:none !important; }
+
+      @media (max-width:520px){
+        .panel { width: calc(100vw - 32px); }
+        .row { grid-template-columns: 1fr auto; }
+      }
+    </style>
+
+    <button class="fab" title="Zentaka Stocks">
+      <span class="fab-icon">ZTK</span>
+    </button>
+
+    <section class="panel" role="dialog" aria-label="Zentaka Stocks" aria-modal="false">
+      <div class="header">
+        <div class="h-left">
+          <span class="title">Zentaka Stock — ${TICKER}</span>
+        </div>
+        <div class="h-actions">
+          <button class="btn js-pin" title="Pin/Unpin">📌</button>
+          <button class="btn js-min" title="Minimize">▁</button>
+          <button class="btn js-close" title="Close">✕</button>
+        </div>
+      </div>
+
+      <div class="body">
+        <div class="row">
+          <div>
+            <div class="price js-price">—</div>
+            <div class="sub js-sub">Updated — <span class="js-time">—:—:—</span></div>
+          </div>
+          <div class="delta js-delta up">+0.00 (0.00%)</div>
+        </div>
+
+        <div class="chart-wrap">
+          <div class="xbar"></div>
+          <div class="grid-v" style="left:20%"></div>
+          <div class="grid-v" style="left:40%"></div>
+          <div class="grid-v" style="left:60%"></div>
+          <div class="grid-v" style="left:80%"></div>
+          <canvas class="js-canvas" width="600" height="240"></canvas>
+        </div>
+      </div>
+    </section>
+  `;
+
+  // ---- Elements & State ----
+  const el = {
+    fab: root.querySelector(".fab"),
+    panel: root.querySelector(".panel"),
+    price: root.querySelector(".js-price"),
+    delta: root.querySelector(".js-delta"),
+    time: root.querySelector(".js-time"),
+    canvas: root.querySelector(".js-canvas"),
+    btnClose: root.querySelector(".js-close"),
+    btnMin: root.querySelector(".js-min"),
+    btnPin: root.querySelector(".js-pin"),
+    header: root.querySelector(".header"),
+    body: root.querySelector(".body"),
+  };
+
+  let pinned = false;
+  let minimized = false;
+  let price = START_PRICE;
+  let prevPrice = price;
+  let data = []; // seeded below
+  let timer;
+
+  // ---- Seed with random history so sparkline isn't empty ----
+  function seedHistory() {
+    let p = START_PRICE + (Math.random() - 0.5) * VOLATILITY * 10; // slight offset
+    for (let i = 0; i < MAX_POINTS; i++) {
+      const drift = (START_PRICE - p) * 0.002;         // mild mean reversion
+      const shock = (Math.random() - 0.5) * VOLATILITY; // noise
+      p = Math.max(0.01, p + drift + shock);
+      data.push(p);
+    }
+    price = data[data.length - 1];
+    prevPrice = price;
+  }
+  seedHistory();
+
+  // ---- Chart ----
+  function draw() {
+    const ctx = el.canvas.getContext("2d");
+    const W = el.canvas.width, H = el.canvas.height;
+    ctx.clearRect(0,0,W,H);
+
+    const min = Math.min(...data);
+    const max = Math.max(...data);
+    const pad = (max - min) * 0.15 || 1;
+    const ymin = min - pad, ymax = max + pad;
+
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = ACCENT;
+    ctx.beginPath();
+    data.forEach((v, i) => {
+      const x = (i/(MAX_POINTS-1)) * W;
+      const y = H - ((v - ymin) / (ymax - ymin)) * H;
+      i ? ctx.lineTo(x,y) : ctx.moveTo(x,y);
+    });
+    ctx.stroke();
+
+    // Glow pass
+    ctx.shadowColor = ACCENT;
+    ctx.shadowBlur = 12;
+    ctx.stroke();
+
+    // Last point indicator
+    const y = H - ((data[data.length-1]-ymin)/(ymax-ymin))*H;
+    ctx.fillStyle = ACCENT;
+    ctx.beginPath();
+    ctx.arc(W-2, y, 3, 0, Math.PI*2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+  }
+
+  // ---- Initial paint so it's not blank even before ticking ----
+  function initialPaint() {
+    draw();
+    el.price.textContent = `${CURRENCY}${price.toFixed(2)}`;
+    el.delta.textContent = `+0.00 (0.00%)`;
+    el.delta.classList.add("up");
+    el.time.textContent = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', second:'2-digit'});
+  }
+  initialPaint();
+
+  // ---- Ticker Update ----
+  function randStep(p, vol) {
+    const drift = (START_PRICE - p) * 0.002;
+    const shock = (Math.random() - 0.5) * vol;
+    return Math.max(0.01, p + drift + shock);
+  }
+
+  function tick() {
+    prevPrice = price;
+    price = randStep(price, VOLATILITY);
+    data.push(price);
+    if (data.length > MAX_POINTS) data.shift();
+
+    const diff = price - prevPrice;
+    const pct  = (diff / prevPrice) * 100;
+
+    el.price.textContent = `${CURRENCY}${price.toFixed(2)}`;
+    el.delta.textContent = `${diff>=0?'+':''}${diff.toFixed(2)} (${pct>=0?'+':''}${pct.toFixed(2)}%)`;
+    el.delta.classList.toggle("up", diff >= 0);
+    el.delta.classList.toggle("down", diff < 0);
+    el.time.textContent = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', second:'2-digit'});
+
+    draw();
+  }
+
+  function start() {
+    if (timer) return;
+    timer = setInterval(tick, INTERVAL_MS);
+    tick(); // immediate update
+  }
+  function stop() { clearInterval(timer); timer = null; }
+
+  // ---- UI Events ----
+  el.fab.addEventListener("click", () => {
+    const show = el.panel.style.display !== "block";
+    el.panel.style.display = show ? "block" : "none";
+    if (show) start(); else stop();
+  });
+
+  el.btnClose.addEventListener("click", () => {
+    el.panel.style.display = "none"; stop();
+  });
+
+  el.btnMin.addEventListener("click", () => {
+    minimized = !minimized;
+    el.body.classList.toggle("hidden", minimized);
+  });
+
+  el.btnPin.addEventListener("click", () => {
+    pinned = !pinned;
+    el.btnPin.textContent = pinned ? "📍" : "📌";
+    el.header.style.cursor = pinned ? "default" : "move";
+  });
+
+  // Drag within viewport
+  let drag = {active:false, x:0, y:0, ox:0, oy:0};
+  function onDown(e){
+    if (pinned) return;
+    drag.active = true;
+    const r = el.panel.getBoundingClientRect();
+    drag.ox = r.left; drag.oy = r.top;
+    drag.x = ("touches" in e ? e.touches[0].clientX : e.clientX);
+    drag.y = ("touches" in e ? e.touches[0].clientY : e.clientY);
+    e.preventDefault();
+  }
+  function onMove(e){
+    if (!drag.active) return;
+    const cx = ("touches" in e ? e.touches[0].clientX : e.clientX);
+    const cy = ("touches" in e ? e.touches[0].clientY : e.clientY);
+    const nx = drag.ox + (cx - drag.x);
+    const ny = drag.oy + (cy - drag.y);
+    el.panel.style.left = Math.max(8, Math.min(window.innerWidth - el.panel.offsetWidth - 8, nx)) + "px";
+    el.panel.style.top  = Math.max(8, Math.min(window.innerHeight - el.panel.offsetHeight - 8, ny)) + "px";
+    el.panel.style.bottom = "auto";
+  }
+  function onUp(){ drag.active = false; }
+
+  el.header.addEventListener("mousedown", onDown);
+  el.header.addEventListener("touchstart", onDown, {passive:false});
+  window.addEventListener("mousemove", onMove);
+  window.addEventListener("touchmove", onMove, {passive:false});
+  window.addEventListener("mouseup", onUp);
+  window.addEventListener("touchend", onUp);
+})();
+</script>
+	
   <!-- Footer -->
   <footer id="contact" class="bg-black/40 py-12 px-6 md:px-20 text-center border-t border-gray-800 relative z-10">
     <p class="mb-4">Contact us: info@zentaka.com</p>
