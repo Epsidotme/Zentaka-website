@@ -363,6 +363,90 @@
         <a href="#">ZENTAKA</a>
       </div>
     </div>
+	  <!-- ZENTAKA → ZENTALEAKS interstitial (paste inside <header>) -->
+<a id="zk-leaks-link" href="https://www.zentaleaks.org/?ref=zentaka&ctx=security-advisory"
+   rel="nofollow noopener noreferrer"
+   style="display:inline-flex;align-items:center;gap:.5rem;padding:.25rem .5rem;border-radius:.5rem;border:1px solid rgba(234,179,8,.5);color:#facc15;text-decoration:none;font:12px/1.1 'ShareTechMono',ui-monospace,monospace;background:linear-gradient(to right,rgba(234,179,8,.08),transparent);">
+  <span aria-hidden="true">⚠️</span>
+  <span>Unverified Source (access logged)</span>
+</a>
+
+<script>
+(() => {
+  const PURPLE = "#9333EA"; // Zentaka accent
+  const link = document.getElementById("zk-leaks-link");
+  const target = link?.getAttribute("href");
+
+  function makeModal() {
+    const wrap = document.createElement("div");
+    wrap.id = "zk-interstitial";
+    wrap.role = "dialog";
+    wrap.setAttribute("aria-modal","true");
+    wrap.setAttribute("aria-labelledby","zk-title");
+    wrap.style.cssText = `
+      position:fixed;inset:0;z-index:2147483647;display:none;
+      font: 12px/1.45 'ShareTechMono', ui-monospace, monospace;
+    `;
+    wrap.innerHTML = `
+      <div style="position:absolute;inset:0;background:rgba(0,0,0,.7)"></div>
+      <div style="
+          position:relative;max-width:520px;margin:10vh auto 0 auto;
+          background:rgba(10,10,10,.96);border:1px solid rgba(234,179,8,.4);
+          border-radius:12px;box-shadow:0 0 16px rgba(147,51,234,.25), inset 0 0 10px rgba(147,51,234,.1);
+          color:#E6E6E6;overflow:hidden;">
+        <div style="padding:12px;border-bottom:1px solid rgba(255,255,255,.06);
+                    background:linear-gradient(to right, rgba(147,51,234,.08), transparent);
+                    display:flex;align-items:center;gap:8px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:${PURPLE};box-shadow:0 0 10px ${PURPLE}"></div>
+          <h3 id="zk-title" style="margin:0;font: 700 14px/1.2 'SDDystopian', sans-serif;letter-spacing:.06em;">
+            Security Advisory
+          </h3>
+        </div>
+        <div style="padding:14px;">
+          <p style="margin:0 0 8px;color:#facc15;">You are leaving a Zentaka-controlled domain.</p>
+          <p style="margin:0 0 12px;color:#cbd5e1;">
+            Destination: <span style="color:#fff">zentaleaks.org</span> — status:
+            <span style="color:#f87171">unverified</span>. Activity may be <em>logged for threat analysis</em>.
+          </p>
+          <p style="margin:0;color:#94a3b8;">Proceed only if you understand the risks.</p>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:8px;padding:12px;border-top:1px solid rgba(255,255,255,.06);">
+          <button id="zk-cancel" style="padding:6px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.08);background:transparent;color:#E6E6E6;cursor:pointer;">Cancel</button>
+          <a id="zk-continue" href="${target}" rel="nofollow noopener noreferrer"
+             style="padding:6px 10px;border-radius:8px;border:1px solid rgba(234,179,8,.6);color:#facc15;background:transparent;text-decoration:none;cursor:pointer;">Continue</a>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(wrap);
+    return wrap;
+  }
+
+  const modal = makeModal();
+  const shade = modal.firstElementChild;
+  const btnCancel = () => modal.querySelector("#zk-cancel");
+  const btnContinue = () => modal.querySelector("#zk-continue");
+
+  function open(e){
+    e?.preventDefault();
+    modal.style.display = "block";
+    btnContinue().focus();
+    document.addEventListener("keydown", onKey);
+  }
+  function close(){
+    modal.style.display = "none";
+    link.focus();
+    document.removeEventListener("keydown", onKey);
+  }
+  function onKey(ev){ if (ev.key === "Escape") close(); }
+
+  link?.addEventListener("click", open);
+  shade?.addEventListener("click", close);
+  modal.addEventListener("click", (e) => {
+    if (e.target && e.target.id === "zk-cancel") close();
+  });
+})();
+</script>
+
     <nav class="space-x-6 hidden md:flex">
       <a href="#" class="hover:text-purple-400">Home</a>
       <a href="#about" class="hover:text-purple-400">About</a>
